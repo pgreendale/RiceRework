@@ -1,5 +1,5 @@
 # RiceR - A rework of the Rice contact mic preamp 
-![](2-Simulation/LittlePreampsXLR.jpg)
+![LittlePreamps](2-Simulation/LittlePreampsXLR.jpg)
 
 
 This project is based on the initial work of Alexander Rice and its successors especially the design from [Zach Poff](https://www.zachpoff.com/resources/alex-rice-piezo-preamplifier/), which caught my interest as a PCB layout was provided. He also mentions Charles Staffeld from [Sagittronics](https://sagittronics.wordpress.com/2019/07/04/simple-phantom-power-preamp-alex-rice-piezo-amplifier/), who has done extensive simulation of the original circuit. This is of significant importance looking into the input impedances of your mixing or recording device (whatever your phantom source is) putting load on the AC (signal-) path. 
