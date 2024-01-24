@@ -1,5 +1,5 @@
 # RiceR - A rework of the Rice contact mic preamp 
-![](0 - Documentation/LittlePreampsXLR.jpg)
+![](2-Simulation/LittlePreampsXLR.jpg)
 
 
 This project is based on the initial work of Alexander Rice and its successors especially the design from [Zach Poff](https://www.zachpoff.com/resources/alex-rice-piezo-preamplifier/), which caught my interest as a PCB layout was provided. He also mentions Charles Staffeld from [Sagittronics](https://sagittronics.wordpress.com/2019/07/04/simple-phantom-power-preamp-alex-rice-piezo-amplifier/), who has done extensive simulation of the original circuit. This is of significant importance looking into the input impedances of your mixing or recording device (whatever your phantom source is) putting load on the AC (signal-) path. 
@@ -68,7 +68,7 @@ This <b>doesn't</b> mean that <i>every</i> recording device has the capability o
 
 
 ## Circuit	
-Please look after [Simulation](2 - Simulation/simulation.md) detailed circuits, simulations and results of the following approaches.  
+Please look after [Simulation](2-Simulation/simulation.md) detailed circuits, simulations and results of the following approaches.  
 
 ### Approach 1: Current Source with more voltage excursion 
 The J201 has a low cutoff voltage, so the voltage drop over the source resistor has is small (-0.3V min according to InterFET), asking for small resistor values to archieve this at operating point. Calculation gives 600Ohm, but in real life, I used smaller values around 100-150 Ohm to set the current output higher. This hinders the current source to lower output voltage if high common mode input puts both amplifying JFETs into conduction. 
@@ -85,7 +85,7 @@ A last experiment to get even more CMRR suppression requires more headroom at th
 
 ## PCB 
 ### THT vs. SMD
-![PCB](0 - Documentation/LTD0-PCB2023_V3A.png)
+![PCB](0-Documentation/LTD0-PCB2023_V3A.png)
 JFETs are still in use, but THT devices (with legs to be mounted through holes in your PCB) are kind of old-fashioned. Manufacturers know that and due to more smd-oriented PCB-Design nowadays, such components become more and more rare, thus difficult to get or <i>unreasonably</i> expensive. I didnt want to buy overpriced J201's from shady e**y stores or hipster-wallet oriented offers, and so I went on with the [SMD MMBFJ201](https://www.reichelt.de/n-kanal-jfet-40v-0-2-1ma-0-35w-sot-23-mmbfj201-p360202.html?&trstct=pos_0&nbc=1) of the J201, which costs less (0.30€)  of what a is asked for [THT J201](https://www.mouser.de/ProductDetail/InterFET/J201?qs=OxRSArmBDfyvD8SbvWteMw%3D%3D).
 
 ### Making Things smaller
@@ -102,19 +102,19 @@ Not perfect, but good enough:
  * Buy some run-of-the mill china copy of a [component tester](https://www.ebay.de/itm/265065551933?hash=item3db723583d:g:t-kAAOSwvWNgNhKa&amdata=enc%3AAQAIAAAA4MVZA11pXEi%2BY8FpUKZ%2Ba6fGrj%2Bg92W5g%2BvEFuaV7X8trvuxUWNuu%2BiUo3P4QnSn8eicAGEaVRB%2BaX3sno8Zs7n9p32MTcgCp%2FKcCjfit%2Bm41IrsrzKEI65ftT0AGj6qV5wsm%2BSe9ota6LyMAYbrZ3AixUm3jQbcnIuPTjFkVYe%2Big%2BgnT9Nog9wD%2F92axCRTxBFWWMISdoD28%2FKe9K8RMAzgf7rEN7JKfyHri0wTwoJ5zPvL857RYVo45sQIgmp1lrfoy2E4d%2F9Fjsllpe8T1pWKjBM68IU9CnFLe9h732N%7Ctkp%3ABk9SR4qI0vqmYw) based on the work of [Markus Frejek and Karl-Heinz Kübbeler](https://www.mikrocontroller.net/articles/AVR_Transistortester#Hint_to_Cloners_and_Sellers_中文). The versions with the 3 SMD pads next to the test socket are good for putting JFETS with SOT-3 housing on.
  * Get [firmware souce](https://github.com/Mikrocontroller-net/transistortester/tree/master) and compile it with UART support. (I had to replace my SPI display with an I2C oled one to free pins for UART, you can also remove the display)
  * Test components: put some on, press the button verify the measurement is done 
- * Label the components! My favorite is a [glued sheet](0 - Documentation/JFET_Matching.jpeg) with a table with numbers, where I put freshly tested components on. 
+ * Label the components! My favorite is a [glued sheet](0-Documentation/JFET_Matching.jpeg) with a table with numbers, where I put freshly tested components on. 
  * Record the UART output into a file e.g. with [putty](https://putty.org) 
  * CSV import: Use MS Excel or Libreoffice Calc to get the test parameters from the uart record text file into a spreadsheet, convert it into a table that parameters from the same component stick together
  * sort for <b>IDss</b>, <b>ID0</b> and <b>V_g at pinchoff</b> and use the most similiar parts together (same readings)
 
 |Transistor tester lunchbox|JFETs on labeled glue sheet|
 |---|---|
-|![](0 - Documentation/Transistortester_Mod.jpeg)|![](0 - Documentation/JFET_Matching.jpeg)|
+|![](0-Documentation/Transistortester_Mod.jpeg)|![](0-Documentation/JFET_Matching.jpeg)|
 
 ## Finished Preamp
 ### Building kit 
 Finished preamp housed in XLR plug, above is a prepared building kit, including matched parts and PCB. 
-![Building kit](0 - Documentation/finished_preamp.jpg)
+![Building kit](0-Documentation/finished_preamp.jpg)
 
 ### Measurements with real built High-Gain preamp
 These measurements were done at 
@@ -124,7 +124,7 @@ These measurements were done at
 
 |Freq.| 35Hz| 1kHz |5KhZ | 28KHz |
 |---|---|---|---|---|
-|| ![Measurement 35Hz](0 - Documentation/Meas_35Hz.png) | ![Measurement 1kHz](0 - Documentation/High_Gain_27dBGain_12.7dbU.jpg)|![Measurement 5.15KHz](0 - Documentation/Meas_5k12Hz.png)|![Measurement](0 - Documentation/Meas_28kHz.png)|
+|| ![Measurement 35Hz](0-Documentation/Meas_35Hz.png) | ![Measurement 1kHz](0-Documentation/High_Gain_27dBGain_12.7dbU.jpg)|![Measurement 5.15KHz](0-Documentation/Meas_5k12Hz.png)|![Measurement](0-Documentation/Meas_28kHz.png)|
 |abs. Output|  9.68dBU, HP rolloff  | 15.72dBU  | 15.12dbU  | 9.65dBU LP rolloff| 
 |relative to 0.2V | 21.44dB | 27.49dB | 26.89dB | 21.42dB |
 
@@ -133,8 +133,8 @@ These values are nearly double the simulated gain, which could be explained with
 ### Clipping 
 JFETs do clip soft. I am running them at 2.21dbU at the input, getting >+22dbU of output voltage swing here. Thats a LOT, ensure your recording/mixing hardware can handle such voltages, or your input protection will kick in and may get damaged (remembering those A&H DJ mixers killing Zoom recorders...?). It shall just show that the High-Gain amplifier with J113/J310 JFETs is capable of some serious voltage swing.
 
-![Measurement](0 - Documentation/Meas_SoftClipping.png)
+![Measurement](0-Documentation/Meas_SoftClipping.png)
 
  
 ## Epilog
-I made these kits for a workshop with non-experienced solder. If you like to build one for yourself, feel free, to use [schematic and pcb files](1 - Hardware/PCB) to do your own. I still have some PCB+Parts kits (without XLR-Plug) sitting around and will sell them to you in the mentioned onepage-kit form if you contact me.  
+I made these kits for a workshop with non-experienced solder. If you like to build one for yourself, feel free, to use [schematic and pcb files](1-Hardware/PCB) to do your own. I still have some PCB+Parts kits (without XLR-Plug) sitting around and will sell them to you in the mentioned onepage-kit form if you contact me.  
