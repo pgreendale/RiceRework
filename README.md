@@ -9,10 +9,10 @@ The design itself is [KISS](https://en.wikipedia.org/wiki/KISS_principle), it is
 
 Because we <b>can</b> (make it always better).
 
-##Thoughts 
+## Thoughts 
 The <b>J201</b>-based design is biased around <i>0.5mA</i> current, [Sagittronics](https://sagittronics.wordpress.com/2019/07/04/simple-phantom-power-preamp-alex-rice-piezo-amplifier/) uses <b>2N3819</b>s with <i>1mA</i> current source. Double current means 4 times  signal power with $`P=I^2*R`$. Can we do more?
 
-###Input impedance and source current
+### Input impedance and source current
 We want 1.228$`V_{eff}`$ (+ 4dBu) at our recorder inputs for a starting point. The design overall is a symmetrical differential amplifier, so we split our amplitude to 1/2 excursion from 0 to the <i>+</i> and <i>-</i> signal input. We assume 2 times 3.6k AC load in parallel (e.G. for Zoom recorders, Sagittronics mentioned) and get roughly
 
 $`I = 2 \cdot I_{signal} = 2 \cdot \frac{\frac{1.228 V }{2}}{3.6kOhm}`$. 
@@ -21,7 +21,7 @@ This calculates to 0.171mA per line and sums up to <b>0.341mA</b>. In case of ha
 
 You can choose recorders with High-Z at their inputs to compensate for that, but if you're in the fields for recording, you may find restrictions at having only your already chosen and beloved recording device. Mixers like Mackie's [VLZ04](https://mackie.com/img/file_resources/1604VLZ4_OM.pdf) has 2.5k at its microphone inputs, thus fulfilling input impedance with 10 times the 220Ohm Microphone impedance, but also a non High-Z load in the AC path. 
 
-###Maximum Voltage excursion
+### Maximum Voltage excursion
 If we have an recorder with High-Z input, we can calculate the maximum voltage change at the 6.8k resistors from inside your recording devices phantom power circuit. They are used as drain resistors here, so current change means changing voltage drop at the resistors, the AC part (our signal) is decoupled internally with capacitors. At 0.5mA, there are +/- 0.25mA per (differential) signal input, if we change input so that one line goes towards up until Phantom power (zero current over the injection resistor), the other one is pulled down towards ground, we got $`V_{eff}=3.4 V`$ (from 0.5mA * 6.8k) difference at maximum (we avoid thinking about clipping, and the JFETs nonlinear behavior at this operating point). The biasing network around the gates keeps the gate at half of the voltage drop over the current source and the amplifying JFET. Both gates are <i>floating</i> somewhere near the phantom voltage potential. 
 
 Piezo discs as contact mics have pretty high output voltages, so we dont need as much as voltage amplification as possible, but a fair amount of output voltage swing is nice to have,(Zoom doesnt specify maximum input voltages for their [Handy Recorder](https://www.zoom-europe.com/de/handy-recorder) products , Mackie says +22dBu maximum at mic inputs for the VLZ04). We need a stronger current source to go beyond +0dB at the output. 
@@ -61,7 +61,7 @@ Four things can be optimized:
 - Higher common mode noise suppression by allowing the currrent source to vary more  
 - Less noise  
 
-###Phantom Power
+### Phantom Power
 [DIN EN 61938](https://schoeps.de/fileadmin/user_upload/user_upload/Downloads/Vortraege_Aufsaetze/Mikrofonaufsaetze/Mikrofonbuch_Kap13.pdf) defines a current of 10mA at 48V phantom voltage (phantom current at + and - signal path together).
 
 This <b>doesn't</b> mean that <i>every</i> recording device has the capability of driving full 10mA but lets assume we have half of that available with semiprofessional equipment. 5mA current sourcing gives 2.5mA per branch in the amplifier, giving room for gain and output improvements.
@@ -70,21 +70,21 @@ This <b>doesn't</b> mean that <i>every</i> recording device has the capability o
 ## Circuit	
 Please look after [Simulation](2 - Simulation/simulation.md) detailed circuits, simulations and results of the following approaches.  
 
-###Approach 1: Current Source with more voltage excursion 
+### Approach 1: Current Source with more voltage excursion 
 The J201 has a low cutoff voltage, so the voltage drop over the source resistor has is small (-0.3V min according to InterFET), asking for small resistor values to archieve this at operating point. Calculation gives 600Ohm, but in real life, I used smaller values around 100-150 Ohm to set the current output higher. This hinders the current source to lower output voltage if high common mode input puts both amplifying JFETs into conduction. 
 
 
 Changing the current source J3 to a J202 JFET archives this, because it needs greater source resistor values to archieve the same current limit and allows for greater common mode input without clipping to ground.  
  
 
-###Approach 2: J113 and J310 JFETs in Action
+### Approach 2: J113 and J310 JFETs in Action
 J113 and J310 have higher current specs. Especially the J310 in its function as current source is run far away from pinchoff Vg with higher source resistors. This enables the current source to float more up and down and allows more CMRR suppression down to -76dB while the amp itself provides <b>15dB</b> gain with <i>loaded</i> outputs. Plus less noise coming from the JFETS. 
 
-###Approach 3: double current source 
+### Approach 3: double current source 
 A last experiment to get even more CMRR suppression requires more headroom at the current source. This is archieved to two current sources in serial configuration. Simulations show up additional -4dB CMRR, so its -80dB. Interestingly, the gain <i>rises</i> another 3.5dB too. Can't explain that at the moment. 
 
-##PCB 
-###THT vs. SMD
+## PCB 
+### THT vs. SMD
 ![PCB](0 - Documentation/LTD0-PCB2023_V3A.png)
 JFETs are still in use, but THT devices (with legs to be mounted through holes in your PCB) are kind of old-fashioned. Manufacturers know that and due to more smd-oriented PCB-Design nowadays, such components become more and more rare, thus difficult to get or <i>unreasonably</i> expensive. I didnt want to buy overpriced J201's from shady e**y stores or hipster-wallet oriented offers, and so I went on with the [SMD MMBFJ201](https://www.reichelt.de/n-kanal-jfet-40v-0-2-1ma-0-35w-sot-23-mmbfj201-p360202.html?&trstct=pos_0&nbc=1) of the J201, which costs less (0.30€)  of what a is asked for [THT J201](https://www.mouser.de/ProductDetail/InterFET/J201?qs=OxRSArmBDfyvD8SbvWteMw%3D%3D).
 
@@ -94,7 +94,7 @@ My goal was to fit the whole preamp into an XLR plug. The metal housing is well 
 There are two <b>caveats</b>: capacitance/charge changes in the cable between preamp and piezo and also microphonic events like tapping the connectors housing can be heard. First is caused by the cable itself acting as a microphonic capacitor between ground and signal lines and second effect comes from the piezoelectricity of the ceramic SMD capacitors. SMD PP or PE caps in 0402 size were not available (if any ever?) so thats a tradeoff.
 
  
-##Mass FET Matching
+## Mass FET Matching
 The amp is a differential (thus symmetric) design. To get good performance, matched components are needed, especially the JFETs whose can deviate from the specified mean value, even if they came from the same production run. Resistors and capacitors are easier to match, you can just buy them with good specs (1% SMD resistors are not as expensive as similiar THT maybe 20 years ago)
 
 Not perfect, but good enough: 
@@ -111,12 +111,12 @@ Not perfect, but good enough:
 |---|---|
 |![](0 - Documentation/Transistortester_Mod.jpeg)|![](0 - Documentation/JFET_Matching.jpeg)|
 
-##Finished Preamp
-###Building kit 
+## Finished Preamp
+### Building kit 
 Finished preamp housed in XLR plug, above is a prepared building kit, including matched parts and PCB. 
 ![Building kit](0 - Documentation/finished_preamp.jpg)
 
-###Measurements with real built High-Gain preamp
+### Measurements with real built High-Gain preamp
 These measurements were done at 
  * 48V phantom power, 6.76k resistors 
  * -11.77 dbU (200mV to 0.775V)  amplitude of the input sine  
@@ -130,11 +130,11 @@ These measurements were done at
 
 These values are nearly double the simulated gain, which could be explained with the ecxeptional high load resistance (20k in parallel). Simulating the J113/J310 circuit again results in 26dB relative gain, not that far off.  
 
-###Clipping 
+### Clipping 
 JFETs do clip soft. I am running them at 2.21dbU at the input, getting >+22dbU of output voltage swing here. Thats a LOT, ensure your recording/mixing hardware can handle such voltages, or your input protection will kick in and may get damaged (remembering those A&H DJ mixers killing Zoom recorders...?). It shall just show that the High-Gain amplifier with J113/J310 JFETs is capable of some serious voltage swing.
 
 ![Measurement](0 - Documentation/Meas_SoftClipping.png)
 
  
-##Epilog
+## Epilog
 I made these kits for a workshop with non-experienced solder. If you like to build one for yourself, feel free, to use [schematic and pcb files](1 - Hardware/PCB) to do your own. I still have some PCB+Parts kits (without XLR-Plug) sitting around and will sell them to you in the mentioned onepage-kit form if you contact me.  
