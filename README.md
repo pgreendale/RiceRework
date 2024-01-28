@@ -68,7 +68,7 @@ This <b>doesn't</b> mean that <i>every</i> recording device has the capability o
 
 
 ## Circuit	
-Please look after [Simulation](2-Simulation/simulation.md) detailed circuits, simulations and results of the following approaches.  
+Please look after [Simulation](/2-Simulation/Simulation.md) detailed circuits, simulations and results of the following approaches.  
 
 ### Approach 1: Current Source with more voltage excursion 
 The J201 has a low cutoff voltage, so the voltage drop over the source resistor has is small (-0.3V min according to InterFET), asking for small resistor values to archieve this at operating point. Calculation gives 600Ohm, but in real life, I used smaller values around 100-150 Ohm to set the current output higher. This hinders the current source to lower output voltage if high common mode input puts both amplifying JFETs into conduction. 
