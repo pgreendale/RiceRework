@@ -138,3 +138,6 @@ JFETs do clip soft. I am running them at 2.21dbU at the input, getting >+22dbU o
  
 ## Epilog
 I made these kits for a workshop with non-experienced solder. If you like to build one for yourself, feel free, to use [schematic and pcb files](1-Hardware/PCB) to do your own. I still have some PCB+Parts kits (without XLR-Plug) sitting around and will sell them to you in the mentioned onepage-kit form if you contact me.  
+
+If you like my work, support me on https://www.buymeacoffee.com/pgreendale :) 
+
